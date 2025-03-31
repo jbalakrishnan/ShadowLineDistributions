@@ -95,13 +95,13 @@ def model_and_gens_rank3_over_K(E, d, Plistgen,p):
     d: quadratic imaginary discriminant such that E(K) has rank 3, where K = Q(sqrt(d))
     returns a minimal model of E and the 3 generators of E(K)
     """
-    assert E.rank()==2
+    assert E.rank() == 2
     assert E.analytic_rank() == 2
     Ed = E.quadratic_twist(d)
     Eds = Ed.short_weierstrass_model()
     Eds_gen = Eds(Plistgen)
-    Qp50 = Qp(p,200)
-    EdQp = Eds.change_ring(Qp50)
+    Qp200 = Qp(p,200)
+    EdQp = Eds.change_ring(Qp200)
     EdgQp = EdQp(Eds_gen[0],Eds_gen[1])
     check_p_divisibility(E,d,Plistgen,p)
     Enew = EllipticCurve([Eds.a4()/d^2, Eds.a6()/d^3])
@@ -165,12 +165,8 @@ def anticyc_padic_height(E, P, d, p, prec, multi, timelimit):
     else:
         embedding = psi2
     assert embedding(p1).valuation() > 0
-
-
     m0 = lcm(E.tamagawa_numbers())
-
     R = multi*m0*P
-
     try_orders = divisors(len(E.change_ring(GF(p)).rational_points()))
     for ord in try_orders:
         B1 = ord*R
@@ -187,7 +183,7 @@ def anticyc_padic_height(E, P, d, p, prec, multi, timelimit):
     if n%2 == 1:
         fn = E.change_ring(QQ).division_polynomial(n)
     else:
-        fn = E.change_ring(QQ).division_polynomial(n, two_torsion_multiplicity=1)
+        fn = E.change_ring(QQ).division_polynomial(n, two_torsion_multiplicity = 1)
 
     xR = R[0]
     xT = T[0]
@@ -200,7 +196,6 @@ def anticyc_padic_height(E, P, d, p, prec, multi, timelimit):
         d_at_R = 1
     else:
         d_at_R = K.ideal(xR).denominator()
-
     alarm(timelimit)
 
     try:
@@ -211,7 +206,7 @@ def anticyc_padic_height(E, P, d, p, prec, multi, timelimit):
         d_at_R = prod([a^(ZZ(e/2)) for (a,e) in factor(d_at_R)])
     alarm(timelimit)
     d_of_nR_to_h = d_at_R^(n^2)*fn_at_R^h
-    dbydconjnR=d_of_nR_to_h/d_of_nR_to_h.conjugate()
+    dbydconjnR = d_of_nR_to_h/d_of_nR_to_h.conjugate()
     value_away_from_p_nR_for_embedding = K.ideal((d_of_nR_to_h.conjugate()/d_of_nR_to_h)).gens_reduced()[0]
     height_away_from_p_nR_via_embedding = 1/(p*h)*log(embedding(value_away_from_p_nR_for_embedding),0)  #this is the height away from p of T=nR
     sig = E.change_ring(QQ).padic_sigma(p,prec)
@@ -223,10 +218,8 @@ def anticyc_padic_height(E, P, d, p, prec, multi, timelimit):
     height_P = 1/(m0^2*multi^2)*height_R
     return height_P
 
-def shadow_line_slope(E,d,p,frommagma,prec,timelimit,mwgens):
+def shadow_line_slope(E, d, p, frommagma, prec, timelimit, mwgens):
     #slopes are truncated at O(p^50)
-    E._has_pdivisible_R = False
-    E._has_pdivisible_hK = False
     Enew,pts = model_and_gens_rank3_over_K(E, d, frommagma,p)
     pt1, pt2, Q = pts
     if mwgens != None:
@@ -258,11 +251,8 @@ def shadow_line_slope(E,d,p,frommagma,prec,timelimit,mwgens):
         cval = [p^b1,p^b2]
         #then generators of H are p^b1*P1, p^b2*P2
     if case == 'case3':
-    #   print('c', c)
         G1 = pt1 + c*pt2 + Q
         G2 = pt2 + Q #need to multiply height by 1/p, since this should be p*pt2
-        #print(pt1+c*pt2)
-        #print(pt2)
     else:
         G1 = pt1 + Q
         G2 = pt2 + Q
@@ -290,7 +280,6 @@ def shadow_distribution(E, p, Dlist, DPlist, timelimit, mwgens = None):
         E = EllipticCurve(E)
     except:
         pass
-    E._S = 1
     print("List of discriminants: ", Dlist)
     print(50*"*")
     slopelist = []
@@ -324,7 +313,7 @@ def shadow_distribution(E, p, Dlist, DPlist, timelimit, mwgens = None):
             except (TypeError,ValueError):
                 print('ValueError at %s'%(Dlist[i]))
                 print('retrying with increased precision')
-                A=shadow_line_slope(E,Dlist[i],p,DPlist[i], 1300, timelimit, mwgens)
+                A = shadow_line_slope(E,Dlist[i],p,DPlist[i], 1300, timelimit, mwgens)
                 print('slope: ', A)
                 slopelist.append(A)
                 print('stats: ', partp(slope_to_modp(slopelist,p),p))
