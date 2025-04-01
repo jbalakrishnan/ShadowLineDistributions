@@ -293,4 +293,4 @@ Dlist = [ -23, -35, -56, -59, -71, -83, -107, -119, -131, -167, -203, -212, -215
 p = 3
 
 load("shadow.sage")
-shadow_distribution('997b1', p, Dlist, DPlist, 600)
+shadow_distribution('997b1', p, Dlist, DPlist, 600, mwgens = [(-1,0), (-3/4,-3/8)])
