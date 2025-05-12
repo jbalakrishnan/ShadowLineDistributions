@@ -15,4 +15,4 @@ To compute 3-adic heights, replace the following Sage library file:
   
 with the file padics.py in this repository and rebuild Sage. This is built on Sage-9.8.
 
-The file parsing.sage has code for all another data in the paper, in particular, producing the mod p^2 distributions, filtered distributions, and the minimal n such that all slopes are separated mod p^n.
+The file parsing.sage has code for all other data in the paper, in particular, producing the mod p^2 distributions, filtered distributions, and the minimal n such that all slopes are separated mod p^n.
